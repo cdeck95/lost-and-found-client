@@ -36,3 +36,9 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
+
+  .success-message {
+    color: green;
+    font-weight: bold;
+    margin-top: 10px;
+  }

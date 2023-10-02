@@ -3,11 +3,15 @@ import axios from 'axios';
 import { API_BASE_URL, Disc } from '../App';
 import '../styles/Inventory.css'; // Import the CSS file
 import { DateTime } from 'luxon';
+import { CircularProgress } from '@mui/material';
 
 function Inventory() {
     const [inventory, setInventory] = useState<Disc[]>([]); // Provide the type 'Disc[]'
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredInventory, setFilteredInventory] = useState(inventory); // Initialize with inventory data
+    const [isLoading, setIsLoading] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [claimedDisc, setClaimedDisc] = useState<number>(0); // Provide the type 'Disc | null'
 
 
   // Assuming your API server is running on localhost:3000
@@ -49,13 +53,19 @@ function Inventory() {
   }, [searchQuery]);
 
   const markAsClaimed = (discId: string) => {
-    axios.put(`${API_BASE_URL}/api/mark-claimed/${discId}`) // Mark a disc as claimed using the API
+    setIsLoading(true); // Set loading state to true
+  
+    axios.put(`${API_BASE_URL}/api/mark-claimed/${discId}`)
       .then((response) => {
         console.log('Disc marked as claimed:', response.data);
-        // You can update the local state or perform other actions here
+        setIsLoading(false); // Set loading state to false
+        setSuccessMessage('Disc claimed successfully'); // Set success message
+        setClaimedDisc(parseInt(discId)); // Set claimedDisc to the ID of the disc being marked as claimed
       })
       .catch((error) => {
         console.error('Error marking disc as claimed:', error);
+        setIsLoading(false); // Set loading state to false in case of an error
+        setSuccessMessage('Error marking disc as claimed'); // Set error message
       });
   };
 
@@ -96,7 +106,14 @@ function Inventory() {
               <td className="table-cell">{disc.dateFound}</td> {/* Apply className */}
               <td className="table-cell">{disc.comments}</td> {/* Apply className */}
               <td className="table-cell">
-                <button onClick={() => markAsClaimed(disc.disc)}>Mark as Claimed</button>
+                {isLoading ? (
+                <div><CircularProgress/></div>
+                ) : (
+                    <div>
+                        {disc.id!==claimedDisc && <button onClick={() => markAsClaimed(disc.id!.toString())}>Mark as Claimed</button>}
+                    </div>
+                    )}
+                {successMessage && disc.id===claimedDisc && <div className="success-message">{successMessage}</div>}
               </td>
             </tr>
           ))}
