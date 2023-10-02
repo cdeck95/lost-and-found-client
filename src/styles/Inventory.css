@@ -1,0 +1,38 @@
+/* Inventory.css */
+
+/* Styles for the table */
+.inventory-table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  /* Styles for the table headers */
+  .table-header {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Styles for the table cells */
+  .table-cell {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .page-container {
+    padding: 1%;
+  }
+  /* Style for the search bar */
+.search-bar {
+    margin-bottom: 20px;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
